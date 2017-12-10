@@ -12,7 +12,7 @@ Finally apply the control module with the original module with no error.
 
 Problem: the accuracy didn't change no matter how many iterations. 
 It seems the gradient descent didn't work. Still need to find the reason. 
-But at least it didn't have error... a little relieve. 
+But at least it didn't have error... a little relieved. 
 
 Solved：change newmodel = copy.deepcopy(model) to newmodel = model
 
