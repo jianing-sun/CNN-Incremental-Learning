@@ -10,19 +10,23 @@ import numpy as np
 import pdb
 import copy
 
-# LOADING DATASET
 
+###################
+# LOADING DATASET #
+###################
 train_dataset = dsets.CIFAR10(root='./data',
-                            train=True,
-                            transform=transforms.ToTensor(),
-                            download=True)
+                              train=True,
+                              transform=transforms.ToTensor(),
+                              download=True)
 
 test_dataset = dsets.CIFAR10(root='./data',
-                           train=False,
-                           transform=transforms.ToTensor())
+                             train=False,
+                             transform=transforms.ToTensor())
 
-# MAKING DATASET ITERABLE
-# print(train_dataset.train_data.size())   #torch.Size([60000, 28, 28])
+###########################
+# MAKING DATASET ITERABLE #
+###########################
+# print(train_dataset.train_data.size())   #torch.Size([60000, 28, 28])   # These are old parameters for MNIST, not for CIFAR 10
 # print(train_dataset.train_labels.size())   #torch.Size([60000])
 # print(test_dataset.test_data.size())   #torch.Size([10000, 28, 28])
 # print(test_dataset.test_labels.size())   #torch.Size([10000])
@@ -38,12 +42,12 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=batch_size,
                                           shuffle=False)
-
-
 # print(help(torch.utils.data))
 # print(help(nn.Conv2d))
-# CREATE MODEL CLASS
 
+####################
+# CREATE CNN MODEL #
+####################
 class CNNModel(nn.Module):
     def __init__(self):
         super(CNNModel, self).__init__()
@@ -70,16 +74,18 @@ class CNNModel(nn.Module):
         out = self.maxpool2(out)
 
         # flatten
-        # Original size: (100,32,4,4)
+        # Original size: (100,32,5,5)
         # Out.size(0): 100
-        # New out size: (100,32*4*4)
+        # New out size: (100,32*5*5)
         out = out.view(out.size(0), -1)
         # Linear function for readout
         out = self.fc1(out)
 
         return out
 
-
+##################################################
+# LINEAR COMBINADTION OF WEIGHTS AND OLD WEIGHTS #
+##################################################
 class LinearSimple(nn.Module):
     def __init__(self, s):
         super(LinearSimple, self).__init__()
@@ -132,7 +138,7 @@ class controlledConv2(nn.Module):
         self.my_bn = my_bn
         self.old_bn = bn
 
-    def forward(self, input, alpha=None):
+    def forward(self, input, alpha=None):  # TODO: take bias into consideration
         # Modify the weights
         # print('forward')
         s = self.s
@@ -172,45 +178,46 @@ class controlledConv2(nn.Module):
         # print(x)
         return x
 
-    # def make_layer(self):
-    #     conv_layer = self.forward()
-    #     self.cnn1 = conv_layer(in_channels=3, out_channels=16, kernel_size=5, stride=1, padding=0)
-    #     self.relu1 = nn.ReLU()
-    #     # Max pool 1
-    #     self.maxpool1 = nn.MaxPool2d(kernel_size=2)
-    #     # Convolution 2
-    #     self.cnn2 = conv_layer(in_channels=16, out_channels=32, kernel_size=5, stride=1, padding=0)
-    #     self.relu2 = nn.ReLU()
-    #     # Max pool 2
-    #     self.maxpool2 = nn.MaxPool2d(kernel_size=2)
-    #     self.fc1 = nn.Linear(32 * 5 * 5, 10)
-    #
-    # def forward_2(self, x):
-    #     # Convolution 1
-    #     print('here')
-    #     out = self.cnn1(x)
-    #     out = self.relu1(out)
-    #
-    #     # Max pool 1
-    #     out = self.maxpool1(out)
-    #
-    #     # Convolution 2
-    #     out = self.cnn2(out)
-    #     out = self.relu2(out)
-    #
-    #     # Max pool 2
-    #     out = self.maxpool2(out)
-    #
-    #     # Resize
-    #     # Original size: (100, 32, 7, 7)
-    #     # out.size(0): 100
-    #     # New out size: (100, 32*7*7)
-    #     out = out.view(out.size(0), -1)
-    #
-    #     # Linear function (readout)
-    #     out = self.fc1(out)
-    #
-    #     return out
+    def make_layer(self):
+        print("make layer")
+        conv_layer = self.forward()
+        self.cnn1 = conv_layer(in_channels=3, out_channels=16, kernel_size=5, stride=1, padding=0)
+        self.relu1 = nn.ReLU()
+        # Max pool 1
+        self.maxpool1 = nn.MaxPool2d(kernel_size=2)
+        # Convolution 2
+        self.cnn2 = conv_layer(in_channels=16, out_channels=32, kernel_size=5, stride=1, padding=0)
+        self.relu2 = nn.ReLU()
+        # Max pool 2
+        self.maxpool2 = nn.MaxPool2d(kernel_size=2)
+        self.fc1 = nn.Linear(32 * 5 * 5, 10)
+
+    def forward_2(self, x):
+        # Convolution 1
+        print('here')
+        out = self.cnn1(x)
+        out = self.relu1(out)
+
+        # Max pool 1
+        out = self.maxpool1(out)
+
+        # Convolution 2
+        out = self.cnn2(out)
+        out = self.relu2(out)
+
+        # Max pool 2
+        out = self.maxpool2(out)
+
+        # Resize
+        # Original size: (100, 32, 5, 5)
+        # out.size(0): 100
+        # New out size: (100, 32*5*5)
+        out = out.view(out.size(0), -1)
+
+        # Linear function (readout)
+        out = self.fc1(out)
+
+        return out
 
 
 def makeItControlled(origModule, newModule, controlAnyway=True, ControlType='linear', rnk_ratio=.5, verbose=False):
@@ -236,29 +243,28 @@ def makeItControlled(origModule, newModule, controlAnyway=True, ControlType='lin
 
             if params_after < params_before or controlAnyway:
                 m = controlledConv2(module1, ControlType, bias=None, rnk_ratio=0.5)  # only this line is important
-                # print('m \n', m)
+                # TODO: should combine module2.bias to new model
                 setattr(newModule, name1, m)
 
-        makeItControlled(module1, module2, controlAnyway=controlAnyway,
+        makeItControlled(module1, module2, controlAnyway=controlAnyway,  # TODO: check if should call the class here
                          ControlType=ControlType, verbose=False, rnk_ratio=rnk_ratio)
     return newModule
 
 
-model = CNNModel()  # 2-layer CNN model
+#######################################
+# INSTANTIATE NEWMODEL BASED ON MODEL #
+#######################################
+model = CNNModel()  # Regular 2-layer CNN model
 # newmodel = copy.deepcopy(model)
 newmodel = model
-# print('before being controlled: \n', newmodel)
 if torch.cuda.is_available():
     model.cuda()
 print('model', model)
+# Establish new model by going through makeItControlled
 newmodel = makeItControlled(model, newmodel, controlAnyway=True, ControlType='linear', rnk_ratio=.5, verbose=False)
-
 if torch.cuda.is_available():
     newmodel.cuda()
-
 print('newmodel', newmodel)
-# print('new model with control module: \n', newmodel)
-
 
 # class CNNModel2(nn.Module):
 #     def __init__(self):
@@ -299,18 +305,18 @@ print('newmodel', newmodel)
 # newmodel = CNNModel2()
 # newmodel.cuda()
 
-
-# INSTANTIATE LOSS CLASS
+#######################################
+# INSTANTIATE LOSS AND OPTIMIZER CLASS#
+#######################################
 criterion = nn.CrossEntropyLoss()
-# INSTANTIATE OPTIMIZER CLASS
 learning_rate = 0.1  # TODO: here learning rate is fixed, so need to find out some methods, maybe not fixed?
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 # criterion = nn.CrossEntropyLoss()
 # optimizer = torch.optim.Adam(model.parameters())
-# print(help(torch.max))
-# print(help(format))
 
-# TRAIN THE MODEL;'
+#########################
+# TRAINING WITH NEWMODEL#
+#########################
 iter = 0
 for epoch in range(num_epoches):
     for i, (images, labels) in enumerate(train_loader):
@@ -322,7 +328,8 @@ for epoch in range(num_epoches):
             labels = Variable(labels)
 
         optimizer.zero_grad()  # Clear gradients first
-        outputs = model(images)  # Forward to get outputs
+        outputs = newmodel(images)  # Forward to get outputs
+        # print(outputs)
         loss = criterion(outputs, labels)  # Cross-entropy loss function
         loss.backward()
         optimizer.step()
@@ -338,7 +345,7 @@ for epoch in range(num_epoches):
                 else:
                     images = Variable(images)
 
-                outputs = model(images)
+                outputs = newmodel(images)
                 predicted = torch.max(outputs.data, 1)[1]  # Get predictions from  the maximum value.
                 # function:: max(input, dim, keepdim=False, out=None) -> (Tensor, LongTensor)
                 # Returns the maximum value of each row of the :attr:`input` Tensor in the given
