@@ -1,6 +1,6 @@
 # cnn_incremental-learning
 Reproductibility Challenge for ICLR 2017: Incremental Learning through Deep Adaption
-
+cnn_v3 is the right one
 Based on pytorch
 
 A project from ECSE608: Machine Learning
