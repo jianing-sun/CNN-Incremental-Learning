@@ -23,7 +23,7 @@ Problem: which one is better with CIFAR10? old one or the new one?
 
 Problem: cnn_vgg changed the regular
 
-**Partial results**
+**Partial results**  8pm 10/12/2017  
 Iteration: 100. Loss: 2.1288864612579346. Accuracy: 31.85.  
 Iteration: 200. Loss: 1.761412501335144. Accuracy: 31.19.  
 Iteration: 300. Loss: 1.2932252883911133. Accuracy: 48.96.  
