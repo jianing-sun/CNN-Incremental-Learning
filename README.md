@@ -22,7 +22,7 @@ Solved：change newmodel = copy.deepcopy(model) to newmodel = model
 
 Problem: which one is better with CIFAR10? old one or the new one?
 
-Problem: cnn_vgg changed the regular
+**Problem: Pre-train!!**
 
 **Partial results**                        8pm 10/12/2017  
 Iteration: 100. Loss: 2.1288864612579346. Accuracy: 31.85.  
