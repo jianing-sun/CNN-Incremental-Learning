@@ -2,7 +2,8 @@
 Reproductibility Challenge for ICLR 2018: Incremental Learning through Deep Adaption
 
 **cnn_v3: Dataset CIFAR10 trained with control module based on a regular 2-layer convolutional neural network.**  
-**cnn_bgg: Dataset CIFAR10 trained with control module based**
+**cnn_vgg: Dataset CIFAR10 trained with control module based**  
+**Model: details of regular vgg net and vgg with control module**  
 
 Based on pytorch
 
