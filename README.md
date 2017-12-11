@@ -50,6 +50,4 @@ Iteration: 2300. Loss: 0.5983885526657104. Accuracy: 71.21.
 Iteration: 2400. Loss: 0.3832913935184479. Accuracy: 73.9.
 Iteration: 2500. Loss: 0.5777073502540588. Accuracy: 72.51.
 
-As Kanye West said:
-> We're living the future so 
-> the present is our past
+
