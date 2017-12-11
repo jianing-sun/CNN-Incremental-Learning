@@ -7,7 +7,7 @@ Reproductibility Challenge for ICLR 2018: Incremental Learning through Deep Adap
 
 Based on pytorch
 
-A project from ECSE608: Machine Learning
+A project from ECSE608: Machine Learning, worked with @harveyyan
 
 Due on Dec 21
 
