@@ -39,4 +39,5 @@ Iteration: 3800. Loss: 0.502714216709137. Accuracy: 74.87
 Iteration: 3900. Loss: 0.30209967494010925. Accuracy: 75.24
 Iteration: 4000. Loss: 0.3032959997653961. Accuracy: 75.82
 
-Comments: Althought it has extremely slow increase after 2000 interations, I guess the accuracy could still be improved with more iterations with a very slow pace.
+Comments: Althought it has extremely slow increase after 2000 interations, 
+I guess the accuracy could still be improved with more iterations with a very slow pace.
