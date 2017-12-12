@@ -274,7 +274,7 @@ def init_params(net):
 
 
 class VGG(nn.Module):
-    def __init__(self, features, fc_size=512, num_classes=1000, dropout=True, fullyconv=False):
+    def __init__(self, features, fc_size=512, num_classes=10, dropout=True, fullyconv=False):
         super(VGG, self).__init__()
         self.features = features
         self.fullyconv = fullyconv
@@ -349,7 +349,7 @@ def make_layers(cfg_1, batch_norm=False, instance_norm=False, affine=False, full
 
 
 def makeNet(fullyconv=False, batch_norm=True):
-    nClasses = 1000
+    nClasses = 10
     my_cfg = cfg
     # if bigNet:
     #     my_cfg = big_cfg
