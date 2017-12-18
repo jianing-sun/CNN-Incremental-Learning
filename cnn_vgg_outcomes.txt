@@ -42,7 +42,8 @@ Iteration: 4000. Loss: 0.3032959997653961. Accuracy: 75.82
 Comments: Althought it has extremely slow increase after 2000 interations, 
 I guess the accuracy could still be improved with more iterations with a very slow pace.
 
-
+17/12/2017  
+linear combination + yellowfin 
 Iteration: 100. Loss: 2.159233570098877. Accuracy: 23.55.  
 Iteration: 200. Loss: 1.8186209201812744. Accuracy: 34.3.  
 Iteration: 300. Loss: 1.5390770435333252. Accuracy: 41.18.  
@@ -83,3 +84,57 @@ Iteration: 3700. Loss: 0.4055677652359009. Accuracy: 70.82.
 Iteration: 3800. Loss: 0.3952827751636505. Accuracy: 71.52.  
 Iteration: 3900. Loss: 0.5677307844161987. Accuracy: 72.1.  
 Iteration: 4000. Loss: 0.49034827947616577. Accuracy: 72.47.  
+
+
+dialog
+Iteration: 100. Loss: 2.1617727279663086. Accuracy: 18.44.  
+Iteration: 200. Loss: 2.0767810344696045. Accuracy: 25.94.   
+Iteration: 300. Loss: 1.9353691339492798. Accuracy: 29.53.  
+Iteration: 400. Loss: 1.8958160877227783. Accuracy: 29.67.  
+Iteration: 500. Loss: 2.165309190750122. Accuracy: 29.01.  
+Iteration: 600. Loss: 1.8692718744277954. Accuracy: 27.62.  
+Iteration: 700. Loss: 1.822899341583252. Accuracy: 31.81.  
+Iteration: 800. Loss: 2.0496068000793457. Accuracy: 32.03.  
+Iteration: 900. Loss: 1.6723438501358032. Accuracy: 31.16.  
+Iteration: 1000. Loss: 1.7324005365371704. Accuracy: 31.39.  
+Iteration: 1100. Loss: 1.857698917388916. Accuracy: 33.81.  
+Iteration: 1200. Loss: 1.970055341720581. Accuracy: 31.78.  
+Iteration: 1300. Loss: 1.8456404209136963. Accuracy: 34.57.  
+Iteration: 1400. Loss: 1.8842320442199707. Accuracy: 32.93.  
+Iteration: 1500. Loss: 1.7862777709960938. Accuracy: 34.58.  
+Iteration: 1600. Loss: 1.7905375957489014. Accuracy: 32.06.  
+Iteration: 1700. Loss: 1.8916466236114502. Accuracy: 34.71.  
+Iteration: 1800. Loss: 1.856189250946045. Accuracy: 36.34.  
+Iteration: 1900. Loss: 2.0854506492614746. Accuracy: 35.06.  
+Iteration: 2000. Loss: 1.8960453271865845. Accuracy: 34.46.  
+Iteration: 2100. Loss: 1.849157452583313. Accuracy: 36.76.  
+Iteration: 2200. Loss: 1.7459379434585571. Accuracy: 34.04.  
+Iteration: 2300. Loss: 1.687678575515747. Accuracy: 37.09.  
+Iteration: 2400. Loss: 1.6497509479522705. Accuracy: 35.38.  
+Iteration: 2500. Loss: 1.8042311668395996. Accuracy: 33.32.  
+Iteration: 2600. Loss: 2.1368327140808105. Accuracy: 36.67.  
+Iteration: 2700. Loss: 1.6968677043914795. Accuracy: 34.89.  
+Iteration: 2800. Loss: 1.850672960281372. Accuracy: 36.71.  
+Iteration: 2900. Loss: 1.8449403047561646. Accuracy: 33.72.  
+Iteration: 3000. Loss: 1.7853617668151855. Accuracy: 35.91.  
+Iteration: 3100. Loss: 1.859846591949463. Accuracy: 34.21.  
+Iteration: 3200. Loss: 1.778123378753662. Accuracy: 34.48.  
+Iteration: 3300. Loss: 1.821661114692688. Accuracy: 34.34.  
+Iteration: 3400. Loss: 1.8072826862335205. Accuracy: 36.5.  
+Iteration: 3500. Loss: 1.8588383197784424. Accuracy: 35.36.  
+Iteration: 3600. Loss: 1.6959513425827026. Accuracy: 37.57.   
+Iteration: 3700. Loss: 1.7548203468322754. Accuracy: 37.4.  
+Iteration: 3800. Loss: 1.859872579574585. Accuracy: 35.55.  
+Iteration: 3900. Loss: 1.6838840246200562. Accuracy: 32.58.  
+Iteration: 4000. Loss: 1.7328721284866333. Accuracy: 34.56.  
+Iteration: 4100. Loss: 1.7154850959777832. Accuracy: 38.2.  
+Iteration: 4200. Loss: 1.8157343864440918. Accuracy: 34.48.  
+Iteration: 4300. Loss: 1.6824383735656738. Accuracy: 37.76.  
+Iteration: 4400. Loss: 1.7504172325134277. Accuracy: 36.52.  
+Iteration: 4500. Loss: 1.8300318717956543. Accuracy: 36.04.  
+Iteration: 4600. Loss: 1.724839687347412. Accuracy: 34.34.  
+Iteration: 4700. Loss: 1.726826786994934. Accuracy: 35.68.  
+Iteration: 4800. Loss: 1.805558204650879. Accuracy: 35.87.    
+Iteration: 4900. Loss: 1.7695542573928833. Accuracy: 35.89.  
+Iteration: 5000. Loss: 1.836499810218811. Accuracy: 35.46.  
+
