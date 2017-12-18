@@ -10,7 +10,8 @@ import numpy as np
 import pdb
 import copy
 from wideresnet import *
-
+from yellowfin import YFOptimizer
+torch.manual_seed(1234)
 ###################
 # LOADING DATASET #
 ###################
@@ -87,7 +88,7 @@ class CNNModel(nn.Module):
 
 
 ##################################################
-# LINEAR COMBINADTION OF WEIGHTS AND OLD WEIGHTS #
+# LINEAR COMBINATION OF WEIGHTS AND OLD WEIGHTS #
 ##################################################
 class LinearSimple(nn.Module):
     def __init__(self, s):
@@ -119,9 +120,17 @@ class controlledConv2(nn.Module):
         # if ControlType == 'linear':
         #     ctrl = LinearSimple(s)
         # self.ctrl = ctrl
-        self.P = Parameter(torch.eye(s[0]) + torch.eye(s[0]) * torch.randn(s[0], s[0]) / s[0])
-        self.register_parameter('P', self.P)
-        # print(self.P)
+        # self.P = Parameter(torch.eye(s[0]) + torch.eye(s[0]) * torch.randn(s[0], s[0]) / s[0])
+        # self.P = Parameter(torch.ones(s[0], 1) + torch.randn(s[0], 1) / s[0])  # diagonal
+        # self.register_parameter('P', self.P)
+
+        rnk = int(s[0] / 2)          # low rank
+        self.p1 = Parameter(torch.zeros(s[0], rnk))
+        self.p1.data[:rnk, :rnk] = torch.eye(rnk)
+        self.p2 = Parameter(torch.zeros(rnk, s[0]))
+        self.p2.data[:rnk, :rnk] = torch.eye(rnk)
+        self.register_parameter('p1', self.p1)
+        self.register_parameter('p2', self.p2)
 
         # bias
         # s_bias = self.s[0]
@@ -134,6 +143,7 @@ class controlledConv2(nn.Module):
             p.requires_grad = T
 
     def set_bn(self, bn):
+
         my_bn = nn.BatchNorm2d(bn.num_features, affine=bn.affine)
         bn.eval()
         my_bn.load_state_dict(bn.state_dict())
@@ -147,7 +157,9 @@ class controlledConv2(nn.Module):
         s = self.s
         w = self.w
         # print('w', w)
-        newW = torch.matmul(self.P, w)  # .cuda()
+        # newW = torch.matmul(self.P, w)  # .cuda()
+        # newW = self.P * w
+        newW = torch.matmul(torch.matmul(self.p1, self.p2), w)
         # newW = w
         # newW = self.ctrl(w)
         # print('newW2', newW)
@@ -310,7 +322,7 @@ class VGG(nn.Module):
         return x, None
 
 
-model = CNNModel()  # Regular 2-layer CNN model
+# model = CNNModel()  # Regular 2-layer CNN model
 # model = WideResNet(depth=28, widen_factor=4, num_classes=1000)
 cfg = [64, 64, 'M', 128, 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M']
 
@@ -374,10 +386,13 @@ print('newmodel', newmodel)
 # INSTANTIATE LOSS AND OPTIMIZER CLASS#
 #######################################
 criterion = nn.CrossEntropyLoss()
-learning_rate = 0.1  # TODO: here learning rate is fixed, so need to find out some methods, maybe not fixed?
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
-# criterion = nn.CrossEntropyLoss()
-# optimizer = torch.optim.Adam(model.parameters())
+params = [p for p in newmodel.parameters() if p.requires_grad]
+wnd_size = 40
+learning_rate = .5  # TODO: here learning rate is fixed, so need to find out some methods, maybe not fixed?
+# optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+optimizer = YFOptimizer(
+    params, lr=learning_rate, mu=0.0, weight_decay=5e-4, clip_thresh=2.0, curv_win_width=wnd_size)
+optimizer._sparsity_debias = True
 
 #########################
 # TRAINING WITH NEWMODEL#
